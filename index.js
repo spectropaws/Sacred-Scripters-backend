@@ -1,16 +1,37 @@
-const express = require("express");
-const paymentController = require("./middlewares/paymentController");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-dotenv.config();
+import express from "express";
 const app = express();
+import mongoose from "mongoose";
+import userRoutes from "./routes/user.js"
+import dotenv from "dotenv"
+import cors from "cors"
+if(process.env.NODE_ENV != "production"){
+    dotenv.config()
+}
 
-dotenv.config({ path: "./config.env" });
+const port = process.env.PORT || 4000;
+const dbUrl = process.env.DB_URI;
+// console.log(dbUrl);
 
-const DB = process.env.DATABASE;
-mongoose.connect(DB, {}).then(() => console.log("DB connection successful!"));
+//Connect to Database
+async function main(){
+   await mongoose.connect(dbUrl);
+}
 
-const port = 5500;
-const server = app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
-});
+main().then(()=>{
+    console.log("Connected Successfully to ",port,"... ")
+}).catch((err) => {
+    console.log(err)
+})
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+
+//Routes
+app.use("/user", userRoutes)
+
+
+app.listen(port, () => {
+    console.log(`Server is Running on http://localhost:${port}`);
+})
