@@ -23,6 +23,12 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
 
+    tokens:{
+        type:Number,
+        default: 1000,
+        require:true,
+    }
+
 }, {timestamps: true});
 
 const User = mongoose.model("User", userSchema);

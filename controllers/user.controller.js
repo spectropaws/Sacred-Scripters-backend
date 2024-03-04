@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken"
 // import nodemailer from "nodemailer"
 import dotenv from "dotenv";
 import dbFunctions from "../database.js";
+import User from "../models/user.model.js";
 dotenv.config()
 
 class userContoller {
@@ -135,7 +136,7 @@ class userContoller {
     //                                 background-color: whitesmoke;
     //                                 font-family: Verdana, Geneva, Tahoma, sans-serif;
     //                             }
-                        
+
     //                             .email-container {
     //                                 max-width: 600px;
     //                                 margin: 20px auto;
@@ -149,7 +150,7 @@ class userContoller {
     //                                 color: whitesmoke;
     //                                 text-decoration: none;
     //                             }
-                        
+
     //                             #button {
     //                                 display: inline-block;
     //                                 padding: 5px 10px;
@@ -224,6 +225,19 @@ class userContoller {
     //         return res.status(400).json({ message: error.message });
     //     }
     // }
+
+    static getUser = async (req, res) => {
+        try {
+            const username = req.params.username;
+            const user = await User.findOne({ username: username });
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.json(user);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 export default userContoller;
