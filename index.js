@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/user.js"
 import dotenv from "dotenv"
 import cors from "cors"
+import isAuthenticated from "./middlewares/user.middleware.js";
 if(process.env.NODE_ENV != "production"){
     dotenv.config()
 }
@@ -14,6 +15,7 @@ const dbUrl = process.env.DB_URI;
 
 //Connect to Database
 async function main(){
+  console.log(dbUrl);
    await mongoose.connect(dbUrl);
 }
 
@@ -30,6 +32,10 @@ app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use("/user", userRoutes)
+
+app.get("/test", isAuthenticated, (req, res) => {
+  res.send("working fine");
+})
 
 
 app.listen(port, () => {

@@ -47,6 +47,7 @@ class userContoller {
 
     //Controller for user Login
     static userLogin = async (req, res) => {
+        console.log(req.body);
         const { email, password } = req.body;
         try {
 
