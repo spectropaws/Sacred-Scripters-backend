@@ -59,7 +59,7 @@ class userContoller {
 
                         //generate token
                         const token = jwt.sign({ userID: isUser._id }, "This is a secret key!", { expiresIn: "5d" });
-                        return res.status(200).json({ message: "Login Successfull.", token, name: isUser.name, success: true });
+                        return res.status(200).json({ message: "Login Successfull.", token, username: isUser.username, success: true });
                     } else {
                         return res.status(400).json({ message: "Invalid Credentials!", success: false })
                     }

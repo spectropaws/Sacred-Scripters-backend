@@ -7,6 +7,10 @@ const gameSchema = new mongoose.Schema({
         type:String,
         required: true,
     },
+    creator:{
+        type: String,
+        required:true,
+    },
     
     price : {
         type:Number,
@@ -21,8 +25,8 @@ const gameSchema = new mongoose.Schema({
     },
     
     external: {
-        type: Boolean,
-        default:false,
+        type: String,
+        default:"",
     },
 
     category: {

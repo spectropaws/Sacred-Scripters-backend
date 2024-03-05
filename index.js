@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/user.js"
 import dotenv from "dotenv"
 import cors from "cors"
+import Game from "./models/game.model.js"
 import isAuthenticated from "./middlewares/user.middleware.js";
 if(process.env.NODE_ENV != "production"){
     dotenv.config()
@@ -20,7 +21,7 @@ async function main(){
 }
 
 main().then(()=>{
-    console.log("Connected Successfully to ",port,"... ")
+    console.log("Connected Successfully to database ... ")
 }).catch((err) => {
     console.log(err)
 })
@@ -33,10 +34,16 @@ app.use(express.urlencoded({ extended: true }));
 //Routes
 app.use("/user", userRoutes)
 
-app.get("/test", isAuthenticated, (req, res) => {
-  res.send("working fine");
-})
 
+//games
+app.get('/games', async (req, res) => {
+    try {
+      const games = await Game.find();
+      res.json(games);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
 
 app.listen(port, () => {
     console.log(`Server is Running on http://localhost:${port}`);
