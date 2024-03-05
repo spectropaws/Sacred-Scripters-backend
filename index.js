@@ -6,7 +6,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 import Game from "./models/game.model.js"
 import isAuthenticated from "./middlewares/user.middleware.js";
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV != "production") {
     dotenv.config()
 }
 
@@ -15,12 +15,12 @@ const dbUrl = process.env.DB_URI;
 // console.log(dbUrl);
 
 //Connect to Database
-async function main(){
-  console.log(dbUrl);
-   await mongoose.connect(dbUrl);
+async function main() {
+    console.log(dbUrl);
+    await mongoose.connect(dbUrl);
 }
 
-main().then(()=>{
+main().then(() => {
     console.log("Connected Successfully to database ... ")
 }).catch((err) => {
     console.log(err)
@@ -29,6 +29,7 @@ main().then(()=>{
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 
 //Routes
@@ -38,12 +39,12 @@ app.use("/user", userRoutes)
 //games
 app.get('/games', async (req, res) => {
     try {
-      const games = await Game.find();
-      res.json(games);
+        const games = await Game.find();
+        res.json(games);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
-  });
+});
 
 app.listen(port, () => {
     console.log(`Server is Running on http://localhost:${port}`);
